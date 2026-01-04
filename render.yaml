@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: emittr-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    port: 8080
+    envVars:
+      - key: DATABASE_URL
+        value: /app/data/game.db
+      - key: PORT
+        value: 8080
+      - key: ENVIRONMENT
+        value: production
+    autoDeploy: true
+
+  - type: web
+    name: emittr-frontend
+    env: docker
+    dockerfilePath: ./frontend/Dockerfile
+    port: 3000
+    envVars:
+      - key: VITE_API_URL
+        value: https://emittr-backend.onrender.com
+    autoDeploy: true
+
+databases: []

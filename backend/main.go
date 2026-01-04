@@ -38,12 +38,18 @@ func main() {
 	}
 	defer db.Close()
 
-	// Initialize Kafka producer
-	producer, err := NewKafkaProducer(kafkaBroker, kafkaTopic)
-	if err != nil {
-		log.Fatal("Failed to initialize Kafka producer:", err)
+	// Initialize Kafka producer (optional, skip if not available)
+	var producer *KafkaProducer
+	if kafkaBroker != "" {
+		var err error
+		producer, err = NewKafkaProducer(kafkaBroker, kafkaTopic)
+		if err != nil {
+			log.Println("Warning: Kafka not available, analytics disabled:", err)
+		}
 	}
-	defer producer.Close()
+	if producer != nil {
+		defer producer.Close()
+	}
 
 	// Initialize game manager
 	gameManager := NewGameManager(db, producer)
