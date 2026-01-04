@@ -39,13 +39,24 @@ function App() {
 
       switch (data.type) {
         case 'game_start':
-          handleGameStart(data.payload)
+          setGameId(data.payload.gameId)
+          setPlayer1Name(data.payload.player1)
+          setPlayer2Name(data.payload.player2)
+          setIsBot(data.payload.isBot)
+          setCurrentPlayer(data.payload.yourTurn ? 1 : 2)
+          setBoard(Array(6).fill(null).map(() => Array(7).fill(0)))
+          setWinner('')
+          setGameState('playing')
           break
         case 'game_move':
-          handleGameMove(data.payload)
+          setBoard(data.payload.board)
+          setCurrentPlayer(data.payload.player === 1 ? 2 : 1)
           break
         case 'game_result':
-          handleGameResult(data.payload)
+          setWinner(data.payload.winner)
+          setWinRow(data.payload.winRow || -1)
+          setWinCol(data.payload.winCol || -1)
+          setGameState('result')
           break
         case 'error':
           setError(data.payload.message)
@@ -69,7 +80,7 @@ function App() {
     return () => {
       websocket.close()
     }
-  }, [handleGameStart, handleGameMove, handleGameResult])
+  }, [])
 
   const handleRegister = useCallback((name) => {
     setUsername(name)
