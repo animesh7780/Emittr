@@ -118,23 +118,41 @@ func (db *Database) SaveGame(game *GameState) error {
 	// Update player stats
 	if game.Winner != "" && game.Winner != "draw" {
 		if game.Winner == "Bot" {
-			db.IncrementLosses(game.Player1)
+			err := db.IncrementLosses(game.Player1)
+			if err != nil {
+				log.Printf("Error updating losses for %s: %v\n", game.Player1, err)
+			}
 		} else {
-			db.IncrementWins(game.Winner)
+			err := db.IncrementWins(game.Winner)
+			if err != nil {
+				log.Printf("Error updating wins for %s: %v\n", game.Winner, err)
+			}
 			if game.IsBot {
 				// No need to update bot stats
 			} else {
 				if game.Player1 == game.Winner {
-					db.IncrementLosses(game.Player2)
+					err := db.IncrementLosses(game.Player2)
+					if err != nil {
+						log.Printf("Error updating losses for %s: %v\n", game.Player2, err)
+					}
 				} else {
-					db.IncrementLosses(game.Player1)
+					err := db.IncrementLosses(game.Player1)
+					if err != nil {
+						log.Printf("Error updating losses for %s: %v\n", game.Player1, err)
+					}
 				}
 			}
 		}
 	} else if game.Winner == "draw" {
-		db.IncrementDraws(game.Player1)
+		err := db.IncrementDraws(game.Player1)
+		if err != nil {
+			log.Printf("Error updating draws for %s: %v\n", game.Player1, err)
+		}
 		if !game.IsBot {
-			db.IncrementDraws(game.Player2)
+			err := db.IncrementDraws(game.Player2)
+			if err != nil {
+				log.Printf("Error updating draws for %s: %v\n", game.Player2, err)
+			}
 		}
 	}
 
