@@ -52,6 +52,14 @@ func (s *Server) setupRoutes() {
 		HandleWebSocket(s.hub)(c.Writer, c.Request)
 	})
 
+	// Root endpoint
+	s.router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Emittr Backend API",
+			"status": "running",
+		})
+	})
+
 	// API endpoints
 	s.router.GET("/api/leaderboard", s.getLeaderboard)
 	s.router.GET("/api/player/:username", s.getPlayerStats)
