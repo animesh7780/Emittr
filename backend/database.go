@@ -190,7 +190,7 @@ func (db *Database) GetLeaderboard(limit int) ([]map[string]interface{}, error) 
 	}
 	defer rows.Close()
 
-	var leaderboard []map[string]interface{}
+	leaderboard := make([]map[string]interface{}, 0) // Initialize as empty slice instead of nil
 	for rows.Next() {
 		var username string
 		var wins, losses, draws int

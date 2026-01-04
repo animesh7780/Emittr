@@ -69,7 +69,7 @@ function App() {
     return () => {
       websocket.close()
     }
-  }, [])
+  }, [handleGameStart, handleGameMove, handleGameResult])
 
   const handleRegister = useCallback((name) => {
     setUsername(name)
