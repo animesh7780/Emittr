@@ -43,7 +43,7 @@ function App() {
           setPlayer1Name(data.payload.player1)
           setPlayer2Name(data.payload.player2)
           setIsBot(data.payload.isBot)
-          setCurrentPlayer(data.payload.yourTurn ? 1 : 2)
+          setCurrentPlayer(1) // Player 1 always goes first
           setBoard(Array(6).fill(null).map(() => Array(7).fill(0)))
           setWinner('')
           setGameState('playing')
