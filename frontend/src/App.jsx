@@ -24,7 +24,8 @@ function App() {
   // WebSocket connection
   useEffect(() => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${protocol}//${window.location.host}/ws`
+    // Connect directly to backend for WebSocket (bypasses nginx)
+    const wsUrl = `${protocol}//emittr-backend-0l70.onrender.com/ws`
     const websocket = new WebSocket(wsUrl)
 
     websocket.onopen = () => {
