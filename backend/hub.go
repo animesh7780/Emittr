@@ -308,16 +308,23 @@ func (h *Hub) HandleGameMove(client *Client, column int) {
 		return
 	}
 
-	// Broadcast the move
+	// Switch turn BEFORE broadcasting
+	if gameState.CurrentPlayer == PLAYER1 {
+		gameState.CurrentPlayer = PLAYER2
+	} else {
+		gameState.CurrentPlayer = PLAYER1
+	}
+
+	// Broadcast the move with updated currentPlayer
 	moveMsg := &Message{
 		Type: "game_move",
 		Payload: GameMoveEventMessage{
-			GameID: client.gameID,
-			Column: column,
-			Row:    row,
-			Player: player,
-			Board:  gameState.Board.Grid,
-			CurrentPlayer: gameState.CurrentPlayer, // Current player before switch
+			GameID:        client.gameID,
+			Column:        column,
+			Row:           row,
+			Player:        player,
+			Board:         gameState.Board.Grid,
+			CurrentPlayer: gameState.CurrentPlayer, // Updated player after switch
 		},
 	}
 
@@ -363,13 +370,6 @@ func (h *Hub) HandleGameMove(client *Client, column int) {
 		return
 	}
 
-	// Switch turn
-	if gameState.CurrentPlayer == PLAYER1 {
-		gameState.CurrentPlayer = PLAYER2
-	} else {
-		gameState.CurrentPlayer = PLAYER1
-	}
-
 	// If opponent is bot, make bot move
 	if gameState.IsBot && gameState.CurrentPlayer == PLAYER2 {
 		time.Sleep(1 * time.Second) // Simulate thinking time
@@ -391,15 +391,18 @@ func (h *Hub) makeBotMove(gameState *GameState, playerClient *Client) {
 		return
 	}
 
+	// Switch turn back to player 1
+	gameState.CurrentPlayer = PLAYER1
+
 	// Broadcast the move
 	moveMsg := &Message{
 		Type: "game_move",
 		Payload: GameMoveEventMessage{
-			GameID: gameState.ID,
-			Column: column,
-			Row:    row,
-			Player: PLAYER2,
-			Board:  gameState.Board.Grid,
+			GameID:        gameState.ID,
+			Column:        column,
+			Row:           row,
+			Player:        PLAYER2,
+			Board:         gameState.Board.Grid,
 			CurrentPlayer: PLAYER1, // Switched to player 1 after bot's move
 		},
 	}
