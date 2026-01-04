@@ -50,7 +50,7 @@ function App() {
           break
         case 'game_move':
           setBoard(data.payload.board)
-          setCurrentPlayer(data.payload.player === 1 ? 2 : 1)
+          setCurrentPlayer(data.payload.currentPlayer)
           break
         case 'game_result':
           setWinner(data.payload.winner)

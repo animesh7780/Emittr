@@ -52,11 +52,12 @@ type GameStartMessage struct {
 }
 
 type GameMoveEventMessage struct {
-	GameID   string `json:"gameId"`
-	Column   int    `json:"column"`
-	Row      int    `json:"row"`
-	Player   int    `json:"player"`
-	Board    [ROWS][COLS]int `json:"board"`
+	GameID       string `json:"gameId"`
+	Column       int    `json:"column"`
+	Row          int    `json:"row"`
+	Player       int    `json:"player"`
+	Board        [ROWS][COLS]int `json:"board"`
+	CurrentPlayer int    `json:"currentPlayer"`
 }
 
 type GameResultMessage struct {
@@ -316,6 +317,7 @@ func (h *Hub) HandleGameMove(client *Client, column int) {
 			Row:    row,
 			Player: player,
 			Board:  gameState.Board.Grid,
+			CurrentPlayer: gameState.CurrentPlayer, // Current player before switch
 		},
 	}
 
@@ -398,6 +400,7 @@ func (h *Hub) makeBotMove(gameState *GameState, playerClient *Client) {
 			Row:    row,
 			Player: PLAYER2,
 			Board:  gameState.Board.Grid,
+			CurrentPlayer: PLAYER1, // Switched to player 1 after bot's move
 		},
 	}
 
