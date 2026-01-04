@@ -3,7 +3,6 @@ services:
     name: emittr-backend
     env: docker
     dockerfilePath: ./backend/Dockerfile
-    port: 8080
     envVars:
       - key: DATABASE_URL
         value: /app/data/game.db
@@ -17,7 +16,6 @@ services:
     name: emittr-frontend
     env: docker
     dockerfilePath: ./frontend/Dockerfile
-    port: 3000
     envVars:
       - key: VITE_API_URL
         value: https://emittr-backend.onrender.com
