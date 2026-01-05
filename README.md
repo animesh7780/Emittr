@@ -38,7 +38,7 @@ npm run dev
 
 ## Requirements
 
-- **Docker** & **Docker Compose** (recommended for easy setup)
+- **Docker** & **Docker Compose** (easy setup)
 - OR manually:
   - **GoLang 1.21+**
   - **Node.js 18+**
