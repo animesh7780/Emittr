@@ -142,12 +142,6 @@ The analytics service will:
 - Log metrics and analytics
 - Track game duration, win rates, player performance
 
-## API Documentation
-
-### WebSocket Messages
-
-#### Client → Server
-
 ## Game Rules
 
 ### Board
